@@ -28,7 +28,6 @@ def get_api(x):
     pattern = re.compile(r'Query Result:\s([a-zA-Z]+)_([a-zA-Z]+)_(\d+\.\d+\.\d+\.\d+\:\d+)_(\d+)')
     result = re.findall(pattern, content)[0]  # 找到"Query Result:"
     return result[0],result[1],result[2],result[3]
-    # return result.group(1),result.group(2),result.group(3),result.group(4)
 
 ## 转账函数,self为账户自身,target为转账目标,x为转账金额
 def invoke(self,target,x):
