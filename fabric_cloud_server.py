@@ -11,9 +11,8 @@ def execCmd(cmd):
     r.close()
     return text
 
-## 获取value
-def get_value(x):
-    #if __name__ == '__main__':
+## 获取账户余额
+def get_money(x):
     cmd = "peer chaincode query -C $CHANNEL_NAME -n mycc -c '{\"Args\":[\"query\",\"%s\"]}'"%x
     result = execCmd(cmd)
     pat1 = ".*Query Result:.*"
@@ -21,6 +20,15 @@ def get_value(x):
     m=re.search("Query Result: ",result)    # 匹配字段
     result=result[:m.start()]+result[m.end():]
     return int(result)
+
+## 获取api调用记录
+def get_api(x):
+    cmd = "peer chaincode query -C $CHANNEL_NAME -n mycc -c '{\"Args\":[\"query\",\"%s\"]}'" % x
+    content = execCmd(cmd)
+    pattern = re.compile(r'Query Result:\s([a-zA-Z]+)_([a-zA-Z]+)_(\d+\.\d+\.\d+\.\d+\:\d+)_(\d+)')
+    result = re.findall(pattern, content)[0]  # 找到"Query Result:"
+    return result[0],result[1],result[2],result[3]
+    # return result.group(1),result.group(2),result.group(3),result.group(4)
 
 ## 转账函数,self为账户自身,target为转账目标,x为转账金额
 def invoke(self,target,x):
