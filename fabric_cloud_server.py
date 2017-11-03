@@ -45,15 +45,16 @@ def get_authority(x):
     id = "auth_" + x
     return get_value(id)
 
-## 获取多个api调用记录
-# def get_api_group(x,y):
-#     cmd = "peer chaincode invoke -o orderer.example.com:7050  --tls $CORE_PEER_TLS_ENABLED --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem  -C $CHANNEL_NAME -n mycc -c '{\"Args\":[\"testRangeQuery\",\"%s\",\"%s\"]}'" % (x,y)
-#     content = execCmd(cmd)
-#     pattern = ".*result: status:200 payload:.*"
-#     result = re.findall(pattern, content)[0]  # 找到result字段
-#     m = re.search("result: status:200 payload:", result)
-#     result = result[:m.start()] + result[m.end():] # 删除指定字段
-#     return result
+# 获取多个api调用记录
+def get_api_group(x,y):
+    cmd = "peer chaincode invoke -o orderer.example.com:7050  --tls $CORE_PEER_TLS_ENABLED --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem  -C $CHANNEL_NAME -n mycc -c '{\"Args\":[\"testRangeQuery\",\"%s\",\"%s\"]}'" % (x,y)
+    content = execCmd(cmd)
+    # pattern = ".*result: status:200 payload:.*"
+    # result = re.findall(pattern, content)[0]  # 找到result字段
+    # m = re.search("result: status:200 payload:", result)
+    # result = result[:m.start()] + result[m.end():] # 删除指定字段
+    # return result
+    return content
 
 ## 转账函数,self为账户自身,target为转账目标,x为转账金额
 def invoke(self,target,x):
@@ -79,4 +80,4 @@ def fabric_cloud():
         c.send(str(value).encode())
 
 if __name__ == "__main__":
-    fabric_cloud()
+    # fabric_cloud()
