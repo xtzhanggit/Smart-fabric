@@ -236,8 +236,8 @@ func (t *SimpleChaincode) addAPI(stub shim.ChaincodeStubInterface, args []string
 	var err error
 
 	// 获取new及其value
-	id = args[0]+"_"+args[1]+"_"+args[3]
-	content = args[0]+"_"+args[1]+"_"+args[2]+"_"+args[3]
+	id = args[0]+"-"+args[1]+"-"+args[2]+"-"+args[3]
+	content = args[0]+"-"+args[1]+"-"+args[2]+"-"+args[3]
 	
 	// Write the state to the ledger
 	err = stub.PutState(id, []byte(content))
