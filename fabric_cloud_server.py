@@ -11,29 +11,30 @@ def execCmd(cmd):
     return text
 
 # 获取账户余额
-def get_money(x):
+def get_value(x):
     cmd = "peer chaincode query -C $CHANNEL_NAME -n mycc -c '{\"Args\":[\"query\",\"%s\"]}'"%x
     result = execCmd(cmd)
     pat1 = ".*Query Result:.*"
     result = re.findall(pat1, result)[0]    # 找到"Query Result:"
     m=re.search("Query Result: ",result)
     result=result[:m.start()]+result[m.end():] # 删除指定字符窜
-    return int(result)
+    return result
 
 # 添加API
 def addAPI(s1,s2,s3,s4):
     os.system('peer chaincode invoke -o orderer.example.com:7050  --tls $CORE_PEER_TLS_ENABLED --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem  -C $CHANNEL_NAME -n mycc -c \'{"Args":["addAPI","%s","%s","%s","%s"]}\'' % (s1,s2,s3,s4))
     time.sleep(3)
 
-# 获取单个api调用记录
-def get_api_element(x):
-    cmd = "peer chaincode query -C $CHANNEL_NAME -n mycc -c '{\"Args\":[\"query\",\"%s\"]}'" % x
-    content = execCmd(cmd)
-    pat1 = ".*Query Result:.*"
-    result = re.findall(pat1, content)[0]  # 找到"Query Result:"
-    m = re.search("Query Result: ", result)
-    result = result[:m.start()] + result[m.end():]  # 删除指定字符窜
-    return result
+# # 获取单个api调用记录
+# def get_api_element(x):
+#     cmd = "peer chaincode query -C $CHANNEL_NAME -n mycc -c '{\"Args\":[\"query\",\"%s\"]}'" % x
+#     result = execCmd(cmd)
+#     pat1 = ".*Query Result:.*"
+#     result = re.findall(pat1, result)[0]  # 找到"Query Result:"
+#     m = re.search("Query Result: ", result)
+#     result = result[:m.start()] + result[m.end():]  # 删除指定字符窜
+#     # return int(result)
+#     return result
 
 # 获取多个api调用记录
 def get_api_group(x,y):
@@ -79,10 +80,8 @@ def fabric_cloud():
         c, addr = s.accept()  # c为新的socket对象，addr为客户的internet地址
         r_data = c.recv(1024).decode()
         r_data = json.loads(r_data)
-        if r_data[0]=="get_money":
-            result=get_money(r_data[1])
-        elif r_data[0]=="get_api_element":
-            result=get_api_element(r_data[0])
+        if r_data[0]=="get_value":
+            result=get_value(r_data[1])
         elif r_data[0]=="get_api_group":
             result=get_api_group(r_data[1],r_data[2])
         elif r_data[0]=="invoke":
