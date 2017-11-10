@@ -25,9 +25,11 @@ def get_value(x):
 
 # 添加API
 def addAPI(s1, s2, s3, s4):
+    serial_number = get_value("serial_number")
+    serial_number += 1
     os.system(
         'peer chaincode invoke -o orderer.example.com:7050  --tls $CORE_PEER_TLS_ENABLED --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem  -C $CHANNEL_NAME -n mycc -c \'{"Args":["addAPI","%s","%s","%s","%s"]}\'' % (
-        s1, s2, s3, s4))
+            s1, s2, s3, s4, serial_number))
     time.sleep(3)
 
 
@@ -45,7 +47,7 @@ def addAPI(s1, s2, s3, s4):
 # 获取多个api调用记录
 def get_api_group(x, y):
     cmd = "peer chaincode invoke -o orderer.example.com:7050  --tls $CORE_PEER_TLS_ENABLED --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem  -C $CHANNEL_NAME -n mycc -c '{\"Args\":[\"testRangeQuery\",\"%s\",\"%s\"]}'" % (
-    x, y)
+        x, y)
     content = execCmd(cmd)
     pat1 = "Chaincode invoke successful. result: status:200 payload:.*"
     result = re.findall(pat1, content)[0]
@@ -60,15 +62,15 @@ def get_api_group(x, y):
 def invoke(self, target, x):
     os.system(
         'peer chaincode invoke -o orderer.example.com:7050  --tls $CORE_PEER_TLS_ENABLED --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem  -C $CHANNEL_NAME -n mycc -c \'{"Args":["invoke","%s","%s","%d"]}\'' % (
-        self, target, x))
+            self, target, x))
     time.sleep(3)  ## sleep3秒,等待交易确认
 
 
 # 创建新用户
-def createUser(target, x):
+def createKey(target, x):
     os.system(
         'peer chaincode invoke -o orderer.example.com:7050  --tls $CORE_PEER_TLS_ENABLED --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem  -C $CHANNEL_NAME -n mycc -c \'{"Args":["create","%s","%d"]}\'' % (
-        target, x))
+            target, x))
     time.sleep(3)
 
 
@@ -117,10 +119,10 @@ def fabric_cloud():
                 result = "The addAPI operation has been done."
             else:
                 result = "list index out of range"
-        elif r_data[0] == "createUser":
+        elif r_data[0] == "createKey":
             if len(r_data) == 3:
-                createUser(r_data[1], r_data[2])
-                result = "The createUser operation has been done."
+                createKey(r_data[1], r_data[2])
+                result = "The createKey operation has been done."
             else:
                 result = "list index out of range"
         else:
