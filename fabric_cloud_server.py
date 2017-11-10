@@ -112,7 +112,7 @@ def fabric_cloud():
             else:
                 result = "list index out of range"
         elif r_data[0] == "addAPI":
-            if len(r_data) == 5
+            if len(r_data) == 5:
                 addAPI(r_data[1], r_data[2], r_data[3], r_data[4])
                 result = "The addAPI operation has been done."
             else:
