@@ -13,11 +13,15 @@ import json
 #     return flag
 
 ## 发送转账信息
+
+"""
+客户端程序
+"""
 def fabric_local(function,args):
     # flag = judgment(buyer, password) ## 身份验证
     # if 1 == True:
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    ip_port = ('119.29.241.15', 2017)
+    ip_port = ('192.168.31.176', 2017)
     s.connect(ip_port)
     s_data=[]
     s_data.append(function)
@@ -32,5 +36,6 @@ def fabric_local(function,args):
     return r_data
 
 if __name__ == "__main__":
-    fabric_local("createKey",["serial_number",0])
+    print(fabric_local("get_value",["a"]))
+    print(fabric_local("addAPI",["10","q","o","dsad"]))
 
