@@ -44,12 +44,16 @@ def get_api_group(x, y):
         x, y)
     content = execCmd(cmd)
     pat1 = "Chaincode invoke successful. result: status:200 payload:.*"
-    result = re.findall(pat1, content)[0]
-    m = re.search("Chaincode invoke successful. result: status:200 payload:", result)
-    result = result[:m.start()] + result[m.end():]  # 删除指定字符窜
-    pat2 = ","
-    result = re.split(pat2, result)
-    return result
+    result=re.findall(pat1, content)
+    if result==[]:
+        final_result="There is no API-call record for this time"
+    else:
+        result = re.findall(pat1, content)[0]
+        m = re.search("Chaincode invoke successful. result: status:200 payload:", result)
+        result = result[:m.start()] + result[m.end():]  # 删除指定字符窜
+        pat2 = ","
+        final_result = re.split(pat2, result)
+    return final_result
 
 """
 转账函数,self为账户自身,target为转账目标,x为转账金额
