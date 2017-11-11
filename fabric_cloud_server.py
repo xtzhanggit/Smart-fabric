@@ -34,7 +34,7 @@ def addAPI(s1, s2, s3):
     os.system(
         'peer chaincode invoke -o orderer.example.com:7050  --tls $CORE_PEER_TLS_ENABLED --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem  -C $CHANNEL_NAME -n mycc -c \'{"Args":["addAPI","%s","%s","%s","%s"]}\'' % (
             now_time,s1, s2, s3))
-    time.sleep(3)
+    # time.sleep(3)
 
 """
 获取多个api调用记录
