@@ -1,48 +1,42 @@
 import socket
 import json
-# import pydb
-
-# ## 判断用户名和密码是否正确
-# def judgment(username, password):
-#     flag=False
-#     idx, passwordx = pydb.get() ## 账户,密码列表
-#     for i in range(len(idx)):
-#         if (idx[i][0] == username) & (passwordx[i][0] == password):
-#             flag = True
-#             break
-#     return flag
-
-## 发送转账信息
 
 """
 客户端程序
 """
-def fabric_local(function,args):
-    # flag = judgment(buyer, password) ## 身份验证
-    # if 1 == True:
+
+
+def fabric_local(function, args):
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         ip_port = ('119.29.241.15', 2017)
         s.connect(ip_port)
     except Exception:
-        r_data="The interface is shut down."
+        r_data = "The interface is shut down."
     else:
-        s_data=[]
+        s_data = []
         s_data.append(function)
         for item in args:
             s_data.append(item)
-        json_data=json.dumps(s_data)
+        json_data = json.dumps(s_data)
         s.send(json_data.encode())
         r_data = s.recv(1024).decode()
         s.close()
     finally:
-    # else:
-    #     r_data = "The id or password isn't correct.Please try again."
         return r_data
 
+
+def api_show(s):
+    result = s.replace("\"", "")
+    result = result.split(",")
+    for item in result:
+        print(item)
+
+
 if __name__ == "__main__":
-    # print(fabric_local("addAPI",["zxt","dxx","sensor0"]))
-    # print(fabric_local("addAPI",["zxt","dxx","sensor1"]))
-    # print(fabric_local("addAPI",["zxt","dxx","sensor2"]))
-    # print(fabric_local("addAPI",["zxt","dxx","sensor3"]))
-    print(fabric_local("get_api_group",["2017-11-25 14:00","2017-11-26 8:57"]))
+    # fabric_local("addAPI",["zxt","dxx","sensor0"])
+    # fabric_local("addAPI",["zxt","dxx","sensor1"])
+    # fabric_local("addAPI",["zxt","dxx","sensor2"])
+    # fabric_local("addAPI",["zxt","dxx","sensor3"])
+    result = fabric_local("get_api_group", ["2017-11-27 16:00", "2017-11-27 16:30"])
+    api_show(result)
