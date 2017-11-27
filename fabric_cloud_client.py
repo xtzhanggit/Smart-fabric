@@ -21,7 +21,7 @@ def fabric_local(function,args):
     # flag = judgment(buyer, password) ## 身份验证
     # if 1 == True:
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    ip_port = ('192.168.31.176', 2017)
+    ip_port = ('119.29.241.15', 2017)
     s.connect(ip_port)
     s_data=[]
     s_data.append(function)
@@ -40,4 +40,4 @@ if __name__ == "__main__":
     # print(fabric_local("addAPI",["zxt","dxx","sensor1"]))
     # print(fabric_local("addAPI",["zxt","dxx","sensor2"]))
     # print(fabric_local("addAPI",["zxt","dxx","sensor3"]))
-    print(fabric_local("get_api_group",["2017-11-13 14:00","2017-11-11 8:57"]))
+    print(fabric_local("get_api_group",["2017-11-11 14:00","2017-11-11 16:00"]))
