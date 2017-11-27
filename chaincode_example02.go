@@ -90,12 +90,8 @@ func (t *SimpleChaincode) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 	} else if function == "testRangeQuery" {
 		// add new key and value
 		return t.testRangeQuery(stub, args)
-	} else if function == "updateAPItimes" {
-		// add new key and value
-		return t.updateAPItimes(stub, args)
-    }
-
-	return shim.Error("Invalid invoke function name. Expecting \"invoke\" \"delete\" \"query\" \"create\" \"addAPI\" \"updateAPItimes\" \"testRangeQuery\" ")
+	} 
+	return shim.Error("Invalid invoke function name. Expecting \"invoke\" \"delete\" \"query\" \"create\" \"addAPI\" \"testRangeQuery\" ")
 }
 
 // Transaction makes payment of X units from A to B
@@ -227,7 +223,7 @@ func (t *SimpleChaincode) create(stub shim.ChaincodeStubInterface, args []string
 
 // 添加新的api调用记录
 func (t *SimpleChaincode) addAPI(stub shim.ChaincodeStubInterface, args []string) pb.Response {
-    if len(args) != 4 {
+    if len(args) != 3 {
 		return shim.Error("Incorrect number of arguments. Expecting 4")
 	}	
 
@@ -236,8 +232,8 @@ func (t *SimpleChaincode) addAPI(stub shim.ChaincodeStubInterface, args []string
 	var err error
 
 	// 获取new及其value
-	id = args[0]+"-"+args[1]+"-"+args[2]+"-"+args[3]
-	content = args[0]+"-"+args[1]+"-"+args[2]+"-"+args[3]
+	id = args[0]+"  |  "+args[1]+"  |  "+args[2]+".API()"
+	content = args[0]+"  |  "+args[1]+"  |  "+args[2]+".API()"
 	
 	// Write the state to the ledger
 	err = stub.PutState(id, []byte(content))
@@ -248,41 +244,7 @@ func (t *SimpleChaincode) addAPI(stub shim.ChaincodeStubInterface, args []string
 	return shim.Success(nil)
 }
 
-// 更新api调用次数
-func (t *SimpleChaincode) updateAPItimes(stub shim.ChaincodeStubInterface, args []string) pb.Response {
-    if len(args) != 2 {
-		return shim.Error("Incorrect number of arguments. Expecting 2")
-	}
 
-	var id string
-	var err error
-	var Aval int
-
-	id=args[0]+"_"+args[1]
-
-	Avalbytes, err := stub.GetState(id)
-	if err != nil {
-		jsonResp := "{\"Error\":\"Failed to get state for " + id + "\"}"
-		return shim.Error(jsonResp)
-	}
-
-	if Avalbytes == nil {
-		// 不存在调用记录的话就设置调用次数为1
-	    err = stub.PutState(id, []byte("1"))
-	    if err != nil {
-		    return shim.Error(err.Error())
-	    }
-	} else {
-	    Aval, _ = strconv.Atoi(string(Avalbytes)) // 字符串化整形
-	    Aval = Aval + 1
-	    err = stub.PutState(id, []byte(strconv.Itoa(Aval)))
-        if err != nil {
-            return shim.Error(err.Error())
-        }
-	}
-
-	return shim.Success(nil)
-}
 
 func getListResult(resultsIterator shim.StateQueryIteratorInterface) ([]byte,error){
     defer resultsIterator.Close()

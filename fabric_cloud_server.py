@@ -28,13 +28,10 @@ def get_value(x):
 """
 添加API
 """
-def addAPI(s1, s2, s3):
+def addAPI(s1, s2):
     now_time = datetime.now()
     now_time = now_time.replace(hour=(now_time.hour + 8)%24)
-    os.system(
-        'peer chaincode invoke -o orderer.example.com:7050  --tls $CORE_PEER_TLS_ENABLED --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem  -C $CHANNEL_NAME -n mycc -c \'{"Args":["addAPI","%s","%s","%s","%s"]}\'' % (
-            now_time,s1, s2, s3))
-    # time.sleep(3)
+    os.system('peer chaincode invoke -o orderer.example.com:7050  --tls $CORE_PEER_TLS_ENABLED --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem  -C $CHANNEL_NAME -n mycc -c \'{"Args":["addAPI","%s","%s","%s"]}\'' % (now_time,s1, s2))
 
 """
 获取多个api调用记录
@@ -51,9 +48,7 @@ def get_api_group(x, y):
         result = re.findall(pat1, content)[0]
         m = re.search("Chaincode invoke successful. result: status:200 payload:", result)
         result = result[:m.start()] + result[m.end():]  # 删除指定字符窜
-        pat2 = ","
-        final_result = re.split(pat2, result)
-    return final_result
+    return result
 
 """
 转账函数,self为账户自身,target为转账目标,x为转账金额
@@ -62,7 +57,6 @@ def invoke(self, target, x):
     os.system(
         'peer chaincode invoke -o orderer.example.com:7050  --tls $CORE_PEER_TLS_ENABLED --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem  -C $CHANNEL_NAME -n mycc -c \'{"Args":["invoke","%s","%s","%d"]}\'' % (
             self, target, x))
-    time.sleep(3)  ## sleep3秒,等待交易确认
 
 """
 创建新用户
@@ -71,7 +65,6 @@ def createKey(target, x):
     os.system(
         'peer chaincode invoke -o orderer.example.com:7050  --tls $CORE_PEER_TLS_ENABLED --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem  -C $CHANNEL_NAME -n mycc -c \'{"Args":["create","%s","%d"]}\'' % (
             target, x))
-    time.sleep(3)
 
 """
 服务端程序
@@ -102,8 +95,8 @@ def fabric_cloud():
             else:
                 result = "list index out of range"
         elif r_data[0] == "addAPI":
-            if len(r_data) == 4:
-                addAPI(r_data[1], r_data[2], r_data[3])
+            if len(r_data) == 3:
+                addAPI(r_data[1], r_data[2])
                 result = "The addAPI operation has been done."
             else:
                 result = "list index out of range"
