@@ -5,10 +5,12 @@ import re
 """
 客户端程序
 """
+
+
 def fabric_local(function, args):
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        ip_port = ('192.168.31.176', 2017)
+        ip_port = ('119.29.241.15', 2017)
         s.connect(ip_port)
     except Exception:
         r_data = "The interface is shut down."
@@ -24,24 +26,32 @@ def fabric_local(function, args):
     finally:
         return r_data
 
+
 """
 删除时间中的秒数字
 """
+
+
 def delete_seconds(s):
     m = re.search(":\d*\.\d*", s)
     result = s[:m.start()] + s[m.end():]
     return result
 
+
 """
 展示api
 """
-def api_show(s):
-    result = s.replace("\"", "")
-    result = result.split(",")
-    for item in result:
-        item=delete_seconds(item)
-        print(item)
 
+
+def api_show(s):
+    try:
+        result = s.replace("\"", "")
+        result = result.split(",")
+        for item in result:
+            item = delete_seconds(item)
+            print(item)
+    except Exception:
+        print("The strings are invalid.")
 
 
 if __name__ == "__main__":
@@ -49,6 +59,5 @@ if __name__ == "__main__":
     # print(fabric_local("addAPI",["zxt","sensor1"]))
     # print(fabric_local("addAPI",["zxt","sensor2"]))
     # print(fabric_local("addAPI",["zxt","sensor3"]))
-    result = fabric_local("get_api_group", ["2017-11-27 21:00", "2017-11-27 22:00"])
+    result = fabric_local("get_api_group", ["2017-11-29 10:00", "2017-11-28 12:00"])
     api_show(result)
-

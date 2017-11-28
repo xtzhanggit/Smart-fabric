@@ -9,13 +9,18 @@ from datetime import datetime
 """
 执行命令.并将执行结果写入文本
 """
+
+
 def execCmd(cmd):
     text = subprocess.getoutput(cmd)
     return text
 
+
 """
 获取账户余额
 """
+
+
 def get_value(x):
     cmd = "peer chaincode query -C $CHANNEL_NAME -n mycc -c '{\"Args\":[\"query\",\"%s\"]}'" % x
     result = execCmd(cmd)
@@ -25,50 +30,67 @@ def get_value(x):
     result = result[:m.start()] + result[m.end():]  # 删除指定字符窜
     return result
 
+
 """
 添加API
 """
+
+
 def addAPI(s1, s2):
     now_time = datetime.now()
-    now_time = now_time.replace(hour=(now_time.hour + 8)%24)
-    os.system('peer chaincode invoke -o orderer.example.com:7050  --tls $CORE_PEER_TLS_ENABLED --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem  -C $CHANNEL_NAME -n mycc -c \'{"Args":["addAPI","%s","%s","%s"]}\'' % (now_time,s1, s2))
+    now_time = now_time.replace(hour=(now_time.hour + 8) % 24)
+    os.system(
+        'peer chaincode invoke -o orderer.example.com:7050  --tls $CORE_PEER_TLS_ENABLED --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem  -C $CHANNEL_NAME -n mycc -c \'{"Args":["addAPI","%s","%s","%s"]}\'' % (
+        now_time, s1, s2))
+
 
 """
 获取多个api调用记录
 """
+
+
 def get_api_group(x, y):
     cmd = "peer chaincode invoke -o orderer.example.com:7050  --tls $CORE_PEER_TLS_ENABLED --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem  -C $CHANNEL_NAME -n mycc -c '{\"Args\":[\"testRangeQuery\",\"%s\",\"%s\"]}'" % (
         x, y)
     content = execCmd(cmd)
     pat1 = "Chaincode invoke successful. result: status:200 payload:.*"
-    result=re.findall(pat1, content)
-    if result==[]:
-        final_result="There is no API-call record for this time"
+    result = re.findall(pat1, content)
+    if result == []:
+        final_result = "There is no API-call record for this time"
     else:
         result = re.findall(pat1, content)[0]
         m = re.search("Chaincode invoke successful. result: status:200 payload:", result)
-        result = result[:m.start()] + result[m.end():]  # 删除指定字符窜
-    return result
+        final_result = result[:m.start()] + result[m.end():]  # 删除指定字符窜
+    return final_result
+
 
 """
 转账函数,self为账户自身,target为转账目标,x为转账金额
 """
+
+
 def invoke(self, target, x):
     os.system(
         'peer chaincode invoke -o orderer.example.com:7050  --tls $CORE_PEER_TLS_ENABLED --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem  -C $CHANNEL_NAME -n mycc -c \'{"Args":["invoke","%s","%s","%d"]}\'' % (
             self, target, x))
 
+
 """
 创建新用户
 """
+
+
 def createKey(target, x):
     os.system(
         'peer chaincode invoke -o orderer.example.com:7050  --tls $CORE_PEER_TLS_ENABLED --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem  -C $CHANNEL_NAME -n mycc -c \'{"Args":["create","%s","%d"]}\'' % (
             target, x))
 
+
 """
 服务端程序
 """
+
+
 def fabric_cloud():
     s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)  # 创建socket对象，用IPv4通信，协议为TCP(family, type)
     ip_port = ('', 2017)  # server的ip一般为空
@@ -109,6 +131,7 @@ def fabric_cloud():
         else:
             result = "No function"
         c.send(str(result).encode())
+
 
 if __name__ == "__main__":
     fabric_cloud()
