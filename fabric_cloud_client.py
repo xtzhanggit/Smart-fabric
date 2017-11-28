@@ -8,7 +8,7 @@ import re
 def fabric_local(function, args):
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        ip_port = ('192.168.31.176', 2017)
+        ip_port = ('119.29.241.17', 2017)
         s.connect(ip_port)
     except Exception:
         r_data = "The interface is shut down."
@@ -49,6 +49,6 @@ if __name__ == "__main__":
     # print(fabric_local("addAPI",["zxt","sensor1"]))
     # print(fabric_local("addAPI",["zxt","sensor2"]))
     # print(fabric_local("addAPI",["zxt","sensor3"]))
-    result = fabric_local("get_api_group", ["2017-11-27 21:00", "2017-11-27 22:00"])
+    result = fabric_local("get_api_group", ["2017-11-27 22:00", "2017-11-27 23:00"])
     api_show(result)
 
