@@ -1,6 +1,8 @@
 import socket
 import json
 import re
+from datetime import datetime
+
 
 """
 客户端程序
@@ -43,7 +45,10 @@ def delete_seconds(s):
 """
 
 
-def api_show(time_list):
+def api_show():
+    now_time = datetime.now()
+    foward_time = now_time.replace(hour=(now_time.hour - 1) % 24)
+    time_list = [str(foward_time), str(now_time)]
     s = fabric_local("get_api_group", time_list)
     try:
         result = s.replace("\"", "")
@@ -55,9 +60,10 @@ def api_show(time_list):
         print("The strings are invalid.")
 
 
+
 if __name__ == "__main__":
     # print(fabric_local("addAPI",["zxt","dxx","sensor0"]))
     # print(fabric_local("addAPI",["zxt","dxx","sensor1"]))
     # print(fabric_local("addAPI",["zxt","dxx","sensor2"]))
     # print(fabric_local("addAPI",["zxt","dxx","sensor3"]))
-    api_show(["2017-11-30 11:00", "2017-11-30 24:00"])
+    api_show()
