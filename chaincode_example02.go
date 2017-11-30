@@ -223,7 +223,7 @@ func (t *SimpleChaincode) create(stub shim.ChaincodeStubInterface, args []string
 
 // 添加新的api调用记录
 func (t *SimpleChaincode) addAPI(stub shim.ChaincodeStubInterface, args []string) pb.Response {
-    if len(args) != 3 {
+    if len(args) != 4 {
 		return shim.Error("Incorrect number of arguments. Expecting 4")
 	}	
 
@@ -232,8 +232,8 @@ func (t *SimpleChaincode) addAPI(stub shim.ChaincodeStubInterface, args []string
 	var err error
 
 	// 获取new及其value
-	id = args[0]+"  |  "+args[1]+"  |  "+args[2]+".API()"
-	content = args[0]+"  |  "+args[1]+"  |  "+args[2]+".API()"
+	id = args[0]+"  |  "+args[1]+"  |  "+args[2]+"  |  "+args[3]+".API()"
+	content = args[0]+"  |  "+args[1]+"  |  "+args[2]+"  |  "+args[3]+".API()"
 	
 	// Write the state to the ledger
 	err = stub.PutState(id, []byte(content))

@@ -36,12 +36,12 @@ def get_value(x):
 """
 
 
-def addAPI(s1, s2):
+def addAPI(s1, s2, s3):
     now_time = datetime.now()
     now_time = now_time.replace(hour=(now_time.hour + 8) % 24)
     os.system(
-        'peer chaincode invoke -o orderer.example.com:7050  --tls $CORE_PEER_TLS_ENABLED --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem  -C $CHANNEL_NAME -n mycc -c \'{"Args":["addAPI","%s","%s","%s"]}\'' % (
-        now_time, s1, s2))
+        'peer chaincode invoke -o orderer.example.com:7050  --tls $CORE_PEER_TLS_ENABLED --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem  -C $CHANNEL_NAME -n mycc -c \'{"Args":["addAPI","%s","%s","%s","%s"]}\'' % (
+        now_time, s1, s2, s3))
 
 
 """
@@ -117,8 +117,8 @@ def fabric_cloud():
             else:
                 result = "list index out of range"
         elif r_data[0] == "addAPI":
-            if len(r_data) == 3:
-                addAPI(r_data[1], r_data[2])
+            if len(r_data) == 4:
+                addAPI(r_data[1], r_data[2],r_data[3])
                 result = "The addAPI operation has been done."
             else:
                 result = "list index out of range"

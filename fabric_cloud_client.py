@@ -56,8 +56,8 @@ def api_show(time_list):
 
 
 if __name__ == "__main__":
-    # print(fabric_local("addAPI",["zxt","sensor0"]))
-    # print(fabric_local("addAPI",["zxt","sensor1"]))
-    # print(fabric_local("addAPI",["zxt","sensor2"]))
-    # print(fabric_local("addAPI",["zxt","sensor3"]))
-    api_show(["2017-11-28 11:00", "2017-11-28 12:00"])
+    # print(fabric_local("addAPI",["zxt","dxx","sensor0"]))
+    # print(fabric_local("addAPI",["zxt","dxx","sensor1"]))
+    # print(fabric_local("addAPI",["zxt","dxx","sensor2"]))
+    # print(fabric_local("addAPI",["zxt","dxx","sensor3"]))
+    api_show(["2017-11-30 11:00", "2017-11-30 24:00"])
