@@ -57,7 +57,8 @@ def api_show():
             item = delete_seconds(item)
             print(item)
     except Exception:
-        print("The strings are invalid.")
+        print(s)
+
 
 
 
@@ -66,4 +67,8 @@ if __name__ == "__main__":
     # print(fabric_local("addAPI",["zxt","dxx","sensor1"]))
     # print(fabric_local("addAPI",["zxt","dxx","sensor2"]))
     # print(fabric_local("addAPI",["zxt","dxx","sensor3"]))
+    # print(fabric_local("addAPI",["zxt", "dxx", "sensor4"]))
+    # print(fabric_local("addAPI",["zxt", "dxx", "sensor5"]))
+    # print(fabric_local("addAPI",["zxt", "dxx", "sensor6"]))
+    # print(fabric_local("addAPI",["zxt", "dxx", "sensor7"]))
     api_show()
