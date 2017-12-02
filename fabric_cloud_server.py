@@ -1,7 +1,6 @@
 import socket
 import os
 import re
-import time
 import json
 import subprocess
 from datetime import datetime
@@ -42,6 +41,8 @@ def addAPI(s1, s2, s3):
     os.system(
         'peer chaincode invoke -o orderer.example.com:7050  --tls $CORE_PEER_TLS_ENABLED --cafile /opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/ordererOrganizations/example.com/orderers/orderer.example.com/msp/tlscacerts/tlsca.example.com-cert.pem  -C $CHANNEL_NAME -n mycc -c \'{"Args":["addAPI","%s","%s","%s","%s"]}\'' % (
         now_time, s1, s2, s3))
+
+
 
 
 """
@@ -130,7 +131,7 @@ def fabric_cloud():
                 result = "list index out of range"
         else:
             result = "No function"
-        c.send(str(result).encode())
+        c.sendall(str(result).encode())
 
 
 if __name__ == "__main__":
