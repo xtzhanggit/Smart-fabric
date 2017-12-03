@@ -46,6 +46,17 @@ def addAPI(s1, s2, s3):
 
 
 """
+删除时间中的秒数字
+"""
+
+
+def delete_seconds(s):
+    m = re.search(":\d*\.\d*", s)
+    result = s[:m.start()] + s[m.end():]
+    return result
+
+
+"""
 获取多个api调用记录
 """
 
@@ -59,9 +70,14 @@ def get_api_group(x, y):
     if result == []:
         final_result = "There is no API-call record for this time"
     else:
+        final_result=[]
         result = re.findall(pat1, content)[0]
         m = re.search("Chaincode invoke successful. result: status:200 payload:", result)
-        final_result = result[:m.start()] + result[m.end():]  # 删除指定字符窜
+        result = result[:m.start()] + result[m.end():]  # 删除指定字符窜
+        result = result.replace("\"", "")
+        result = result.split(",")
+        for i in range(10):
+            final_result.append(str(delete_seconds(result[len(result)-1-9+i])))
     return final_result
 
 

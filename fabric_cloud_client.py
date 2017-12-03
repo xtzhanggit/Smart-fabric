@@ -12,7 +12,7 @@ from datetime import datetime
 def fabric_local(function, args):
     try:
         s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        ip_port = ('10.175.152.8', 2017)
+        ip_port = ('119.29.241.15', 2017)
         s.connect(ip_port)
     except Exception:
         r_data = "The interface is shut down."
@@ -29,45 +29,32 @@ def fabric_local(function, args):
     finally:
         return r_data
 
-
-"""
-删除时间中的秒数字
-"""
-
-
-def delete_seconds(s):
-    m = re.search(":\d*\.\d*", s)
-    result = s[:m.start()] + s[m.end():]
-    return result
-
-
 """
 展示api
 """
 
 
 def api_show():
-    i = 0
     now_time = datetime.now()
     foward_time = now_time.replace(hour=(now_time.hour - 1) % 24)
     time_list = [str(foward_time), str(now_time)]
-    s = fabric_local("get_api_group", ["2017-12-02 00:00","2017-12-02 01:00"])
+    s = fabric_local("get_api_group", time_list)
     try:
-        result = s.replace("\"", "")
-        result = result.split(",")
-
+        result = s.split(",")
         for item in result:
-            item = delete_seconds(item)
-            i+=1
+            item = item.replace("'","")
+            item = item.replace("[","")
+            item = item.replace("]","")
+            item =item.strip()
             print(item)
     except Exception:
         print(s)
-    print(i)
+    
 
 
 
 if __name__ == "__main__":
-    # for i in range(50):
+    # for i in range(100):
     #     print(fabric_local("addAPI", ["zxt", "dxx", "sensor0"]))
     # print(fabric_local("addAPI",["zxt","dxx","sensor0"]))
     # print(fabric_local("addAPI",["zxt","dxx","sensor1"]))
@@ -77,4 +64,21 @@ if __name__ == "__main__":
     # print(fabric_local("addAPI",["zxt", "dxx", "sensor5"]))
     # print(fabric_local("addAPI",["zxt", "dxx", "sensor6"]))
     # print(fabric_local("addAPI",["zxt", "dxx", "sensor7"]))
+    # print(fabric_local("addAPI",["zxt", "dxx", "sensor8"]))
+    # print(fabric_local("addAPI",["zxt", "dxx", "sensor9"]))
+    # print(fabric_local("addAPI",["zxt", "dxx", "sensor10"]))
+    # print(fabric_local("addAPI",["zxt", "dxx", "sensor11"]))
+    # print(fabric_local("addAPI",["zxt", "dxx", "sensor12"]))
+    # print(fabric_local("addAPI",["zxt","dxx","sensor13"]))
+    # print(fabric_local("addAPI",["zxt","dxx","sensor14"]))
+    # print(fabric_local("addAPI",["zxt","dxx","sensor15"]))
+    # print(fabric_local("addAPI",["zxt","dxx","sensor378"]))
+    # print(fabric_local("addAPI",["zxt", "dxx", "sensor78"]))
+    # print(fabric_local("addAPI",["zxt", "dxx", "sensor521"]))
+    # print(fabric_local("addAPI",["zxt", "dxx", "sensor64"]))
+    # print(fabric_local("addAPI",["zxt", "dxx", "sensor72"]))
+    # print(fabric_local("addAPI",["zxt", "dxx", "sensor8978"]))
+    # print(fabric_local("addAPI",["zxt", "dxx", "sensor91"]))
+    # print(fabric_local("addAPI",["zxt", "dxx", "sensor104"]))
+    # print(fabric_local("addAPI",["zxt", "dxx", "sensor118"]))
     api_show()
