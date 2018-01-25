@@ -1,7 +1,9 @@
 import socket
 import os
 import re
+import time
 import json
+import threading
 import subprocess
 from datetime import datetime
 
@@ -117,38 +119,52 @@ def fabric_cloud():
         c, addr = s.accept()  # c为新的socket对象，addr为客户的internet地址
         r_data = c.recv(1024).decode()
         r_data = json.loads(r_data)
-        if r_data[0] == "get_value":
-            if len(r_data) == 2:
-                result = get_value(r_data[1])
+        try:
+            if r_data[0] == "get_value":
+                if len(r_data) == 2:
+                    result = get_value(r_data[1])
+                else:
+                    result = "list index out of range"
+            elif r_data[0] == "get_api_group":
+                if len(r_data) == 3:
+                    result = get_api_group(r_data[1], r_data[2])
+                else:
+                    result = "list index out of range"
+            elif r_data[0] == "invoke":
+                if len(r_data) == 4:
+                    invoke(r_data[1], r_data[2], r_data[3])
+                    result = "The invoke operation has been done."
+                else:
+                    result = "list index out of range"
+            elif r_data[0] == "addAPI":
+                if len(r_data) == 4:
+                    addAPI(r_data[1], r_data[2],r_data[3])
+                    result = "The addAPI operation has been done."
+                else:
+                    result = "list index out of range"
+            elif r_data[0] == "createKey":
+                if len(r_data) == 3:
+                    createKey(r_data[1], r_data[2])
+                    result = "The createKey operation has been done."
+                else:
+                    result = "list index out of range"
             else:
-                result = "list index out of range"
-        elif r_data[0] == "get_api_group":
-            if len(r_data) == 3:
-                result = get_api_group(r_data[1], r_data[2])
-            else:
-                result = "list index out of range"
-        elif r_data[0] == "invoke":
-            if len(r_data) == 4:
-                invoke(r_data[1], r_data[2], r_data[3])
-                result = "The invoke operation has been done."
-            else:
-                result = "list index out of range"
-        elif r_data[0] == "addAPI":
-            if len(r_data) == 4:
-                addAPI(r_data[1], r_data[2],r_data[3])
-                result = "The addAPI operation has been done."
-            else:
-                result = "list index out of range"
-        elif r_data[0] == "createKey":
-            if len(r_data) == 3:
-                createKey(r_data[1], r_data[2])
-                result = "The createKey operation has been done."
-            else:
-                result = "list index out of range"
-        else:
-            result = "No function"
-        c.sendall(str(result).encode())
+                result = "No function"
+        except Exception:
+            result="The function returns a value error"
+        finally:
+            c.sendall(str(result).encode())
+            c.close()
+    s.close()
+
+def test_print():
+    while True:
+        print("the server is running")
+        time.sleep(2)
 
 
 if __name__ == "__main__":
-    fabric_cloud()
+    t1 = threading.Thread(target=fabric_cloud)
+    t2 = threading.Thread(target=test_print)
+    t1.start()
+    t2.start()

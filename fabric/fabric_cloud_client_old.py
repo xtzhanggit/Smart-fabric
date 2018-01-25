@@ -1,8 +1,7 @@
 import socket
 import json
-import re
 from datetime import datetime
-
+import time
 
 """
 客户端程序
@@ -39,6 +38,7 @@ def api_show():
     foward_time = now_time.replace(hour=(now_time.hour - 1) % 24)
     time_list = [str(foward_time), str(now_time)]
     s = fabric_local("get_api_group", time_list)
+    print("The last 10 APIs")
     try:
         result = s.split(",")
         for item in result:
@@ -54,7 +54,13 @@ def api_show():
 
 
 if __name__ == "__main__":
-    # for i in range(100):
+    while True:
+        print(fabric_local("addAPI",["zxt","dxx","sensor13"]))
+        # for i in range(10):
+        #    sensor="sensor"+str(i)
+        #    print(fabric_local("addAPI",["zxt","unknown",sensor]))
+        time.sleep(600)
+    # for i in range(500):
     #     print(fabric_local("addAPI", ["zxt", "dxx", "sensor0"]))
     # print(fabric_local("addAPI",["zxt","dxx","sensor0"]))
     # print(fabric_local("addAPI",["zxt","dxx","sensor1"]))
@@ -81,4 +87,4 @@ if __name__ == "__main__":
     # print(fabric_local("addAPI",["zxt", "dxx", "sensor91"]))
     # print(fabric_local("addAPI",["zxt", "dxx", "sensor104"]))
     # print(fabric_local("addAPI",["zxt", "dxx", "sensor118"]))
-    api_show()
+    # api_show()
