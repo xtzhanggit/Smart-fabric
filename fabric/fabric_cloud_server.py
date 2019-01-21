@@ -59,7 +59,7 @@ class ThreadedTCPServer(socketserver.ThreadingMixIn,socketserver.TCPServer):
 
 if __name__=="__main__":
 
-    HOST,PORT="127.0.0.1",2017
+    HOST,PORT='',2017
     socketserver.TCPServer.allow_reuse_address = True
     server = ThreadedTCPServer((HOST,PORT), ThreadedTCPRequestHandler)
     ip,port = server.server_address
